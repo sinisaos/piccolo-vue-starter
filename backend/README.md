@@ -5,7 +5,7 @@ virtualenv -p python3 envname
 cd envname
 source bin/activate
 git clone https://github.com/sinisaos/piccolo-vue-starter.git
-cd backend
+cd piccolo-vue-starter/backend
 pip install -r requirements.txt
 sudo -i -u yourpostgresusername psql
 CREATE DATABASE yourdb;
