@@ -8,7 +8,6 @@ from piccolo_admin.endpoints import create_admin
 from piccolo_api.crud.endpoints import PiccoloCRUD
 from piccolo_api.csrf.middleware import CSRFMiddleware
 from piccolo_api.fastapi.endpoints import FastAPIKwargs, FastAPIWrapper
-from starlette.middleware import Middleware
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
@@ -30,7 +29,6 @@ app = FastAPI(
         ),
         Mount("/static/", StaticFiles(directory="static")),
     ],
-    middleware=[Middleware(CSRFMiddleware)],
 )
 
 origins = [
@@ -81,3 +79,8 @@ async def close_database_connection_pool():
         await engine.close_connection_pool()
     except Exception:
         print("Unable to connect to the database")
+
+
+# Required when running under HTTPS:
+# app = CSRFMiddleware(app, allowed_hosts=['my_site.com']
+app = CSRFMiddleware(app)
