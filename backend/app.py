@@ -82,5 +82,4 @@ async def close_database_connection_pool():
 
 
 # Required when running under HTTPS:
-# app = CSRFMiddleware(app, allowed_hosts=['my_site.com']
-app = CSRFMiddleware(app)
+# app = CSRFMiddleware(app, allowed_hosts=['my_site.com'])
