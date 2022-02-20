@@ -13,6 +13,7 @@ CREATE DATABASE yourdb;
 touch .env
 ## put this in .env file
 ## DB_NAME="your db name"
+## TEST_DB_NAME="your test db name"
 ## DB_USER="your db username"
 ## DB_PASSWORD="your db password"
 ## DB_HOST="your db host"
