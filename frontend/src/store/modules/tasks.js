@@ -23,14 +23,13 @@ const actions = {
     const response = await axios.get(`tasks/${id}`)
     context.commit('setTask', response.data)
   },
-  // eslint-disable-next-line no-empty-pattern
-  async updateTask({ }, task) {
+  async updateTask(context, task) {
     await axios.patch(`tasks/${task.id}`, task.form)
+    context.dispatch('userTasks')
   },
-  // eslint-disable-next-line no-empty-pattern
-  async deleteTask({ }, id) {
-    console.log(id)
+  async deleteTask(context, id) {
     await axios.delete(`tasks/${id}`)
+    context.dispatch('userTasks')
   }
 }
 
