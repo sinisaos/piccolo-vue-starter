@@ -166,3 +166,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.float-end {
+    padding-top: 0.5rem;
+}
+</style>

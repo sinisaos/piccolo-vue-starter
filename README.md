@@ -4,6 +4,7 @@ The template includes several useful things such as:
 - user authentication
 - user management (with user profile and crud dashboard)
 - simple table crud using [FastAPIWrapper](https://piccolo-api.readthedocs.io/en/latest/fastapi/index.html)
+- Google login
 - and more
 
 For backend installation look at backend readme.

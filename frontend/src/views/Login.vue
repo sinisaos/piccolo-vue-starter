@@ -47,6 +47,19 @@
                                 >
                             </p>
                         </form>
+                        <div class="card-title text-center">
+                            <br />
+                            <div class="seperator">
+                                <hr />
+                                <b>OR</b>
+                            </div>
+                            <GoogleLogin
+                                class="btn btn-google"
+                                :params="params"
+                                :renderParams="renderParams"
+                                :onSuccess="onSuccess"
+                            ></GoogleLogin>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,17 +69,29 @@
 
 <script>
 import { mapActions } from "vuex"
+import GoogleLogin from "vue-google-login"
 
 export default {
     data() {
         return {
             username: "",
             password: "",
-            error: false
+            error: false,
+            params: {
+                client_id: process.env.VUE_APP_CLIENT_ID
+            },
+            renderParams: {
+                width: 260,
+                height: 50,
+                longtitle: true
+            }
         }
     },
+    components: {
+        GoogleLogin
+    },
     methods: {
-        ...mapActions(["loginUser"]),
+        ...mapActions(["loginUser", "registerUser"]),
         async submit() {
             const form = new FormData()
             form.append("username", this.username)
@@ -79,7 +104,55 @@ export default {
                 .catch(() => {
                     this.error = true
                 })
+        },
+        onSuccess(googleUser) {
+            // data for register Google user as BaseUser with fake password
+            // to satisfy Pydantic validation on backend
+            let password = "0425346c32c9c3dd"
+            let userInfo = {
+                username: googleUser.getBasicProfile().getName(),
+                email: googleUser.getBasicProfile().getEmail(),
+                password: password
+            }
+            // form for login Google user as BaseUser with fake password because
+            // we don't need a password when using a Google login. We can reveal
+            // this password because is hashed by Piccolo backend anyway,
+            // and we actually aren’t use this password. With this way both
+            // username/password login and Google login can work together
+            let loginForm = new FormData()
+            loginForm.append("username", googleUser.getBasicProfile().getName())
+            loginForm.append("password", password)
+            this.$store
+                .dispatch("registerUser", userInfo)
+                .then(() => {
+                    this.$router.push("/")
+                })
+                .catch(() => {
+                    this.$store.dispatch("loginUser", loginForm)
+                    this.$router.push("/")
+                })
         }
     }
 }
 </script>
+
+<style scoped>
+.seperator b {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    background: #fff;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    position: relative;
+    top: -36px;
+    z-index: 1;
+    margin-bottom: -1rem;
+}
+.float-end {
+    padding-top: 0.5rem;
+}
+</style>

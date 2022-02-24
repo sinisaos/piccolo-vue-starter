@@ -14,7 +14,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken'
 axios.defaults.xsrfCookieName = 'csrftoken'
 axios.defaults.baseURL = 'http://localhost:8000/'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {

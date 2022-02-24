@@ -48,11 +48,11 @@ const mutations = {
   logout(state, user) {
     state.user = user
   },
-};
+}
 
 export default {
   state,
   getters,
   actions,
   mutations
-};
+}
