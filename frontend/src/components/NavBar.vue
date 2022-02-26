@@ -81,6 +81,11 @@ export default {
             await this.$store.dispatch("logoutUser")
             this.$router.push("/")
         }
+    },
+    watch: {
+        $route() {
+            document.querySelector("#navbarScroll").classList.remove("show")
+        }
     }
 }
 </script>
