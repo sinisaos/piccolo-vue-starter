@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="card shadow">
+                <div class="card">
                     <div class="card-title text-center">
                         <h3 class="p-3">Register</h3>
                         <div

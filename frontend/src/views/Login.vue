@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="card shadow">
+                <div class="card">
                     <div class="card-title text-center">
                         <h2 class="p-3">Login</h2>
                         <div
@@ -136,7 +136,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .seperator b {
     width: 40px;
     height: 40px;

@@ -1,6 +1,6 @@
 <template>
     <header>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
                 <router-link class="navbar-brand" to="/"
                     >Piccolo | Vue</router-link
@@ -21,6 +21,27 @@
                         v-if="isAuthenticated"
                         class="navbar-nav ms-auto mb-2 mb-md-0"
                     >
+                        <li class="nav-link">
+                            <input
+                                @change="toggleTheme"
+                                id="checkbox"
+                                type="checkbox"
+                                class="switch-checkbox"
+                            />
+                            <label for="checkbox">
+                                <span v-if="userTheme === 'light-theme'"
+                                    >🌙</span
+                                >
+                                <span v-else>☀️</span>
+                                <div
+                                    class="switch-toggle"
+                                    :class="{
+                                        'switch-toggle-checked':
+                                            userTheme === 'dark-theme'
+                                    }"
+                                ></div>
+                            </label>
+                        </li>
                         <li class="nav-item dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
@@ -52,6 +73,27 @@
                         </li>
                     </ul>
                     <ul v-else class="navbar-nav ms-auto mb-2 mb-md-0">
+                        <li class="nav-link">
+                            <input
+                                @change="toggleTheme"
+                                id="checkbox"
+                                type="checkbox"
+                                class="switch-checkbox"
+                            />
+                            <label for="checkbox">
+                                <span v-if="userTheme === 'light-theme'"
+                                    >🌙</span
+                                >
+                                <span v-else>☀️</span>
+                                <div
+                                    class="switch-toggle"
+                                    :class="{
+                                        'switch-toggle-checked':
+                                            userTheme === 'dark-theme'
+                                    }"
+                                ></div>
+                            </label>
+                        </li>
                         <li class="nav-item">
                             <router-link class="nav-link" to="/login"
                                 >Log In</router-link
@@ -73,6 +115,11 @@
 import { mapGetters } from "vuex"
 
 export default {
+    data() {
+        return {
+            userTheme: "light-theme"
+        }
+    },
     computed: {
         ...mapGetters(["isAuthenticated", "stateUser"])
     },
@@ -80,6 +127,19 @@ export default {
         async logout() {
             await this.$store.dispatch("logoutUser")
             this.$router.push("/")
+        },
+        setTheme(theme) {
+            localStorage.setItem("user-theme", theme)
+            this.userTheme = theme
+            document.documentElement.className = theme
+        },
+        toggleTheme() {
+            const activeTheme = localStorage.getItem("user-theme")
+            if (activeTheme === "light-theme") {
+                this.setTheme("dark-theme")
+            } else {
+                this.setTheme("light-theme")
+            }
         }
     },
     watch: {
@@ -90,8 +150,6 @@ export default {
 }
 </script>
 
-<style scoped>
-a {
-    cursor: pointer;
-}
+<style lang="less">
+@import "../main.less";
 </style>

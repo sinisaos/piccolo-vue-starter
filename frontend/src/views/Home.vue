@@ -1,19 +1,25 @@
 <template>
     <div class="container">
-        <div v-for="task in tasks" :key="task.id">
-            <div class="card shadow p-2 mb-4 rounded">
-                <div class="card-body">
-                    <p class="mb-0">
-                        Posted by:
-                        <span
-                            ><b>{{ task.task_user_readable }}</b> at
-                            {{ task.created_at }}</span
-                        >
-                    </p>
-                    <h2>
-                        {{ task.name }}
-                    </h2>
-                    <p class="mb-0">Completed - {{ task.completed }}</p>
+        <div class="row row-cols-1 row-cols-md-3 g-2">
+            <div v-for="task in tasks" :key="task.id">
+                <div class="card p-2 mb-4 rounded">
+                    <div class="card-body">
+                        <p class="mb-0">
+                            Posted by
+                            <span
+                                ><b>{{ task.task_user_readable }}</b>
+                                <vue-moments-ago
+                                    prefix=""
+                                    suffix="ago"
+                                    :date="task.created_at"
+                                ></vue-moments-ago
+                            ></span>
+                        </p>
+                        <h2>
+                            {{ task.name }}
+                        </h2>
+                        <p class="mb-0">Completed - {{ task.completed }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,12 +27,16 @@
 </template>
 <script>
 import axios from "axios"
+import VueMomentsAgo from "vue-moments-ago"
 
 export default {
     data() {
         return {
             tasks: []
         }
+    },
+    components: {
+        VueMomentsAgo
     },
     computed: {
         isLoggedIn() {
@@ -45,3 +55,9 @@ export default {
     }
 }
 </script>
+
+<style lang="less" scoped>
+.vue-moments-ago {
+    font-size: 1rem;
+}
+</style>

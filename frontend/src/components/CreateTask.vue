@@ -81,7 +81,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 #create-button {
     margin-bottom: 1em;
 }
