@@ -28,7 +28,7 @@
                                 type="checkbox"
                                 class="switch-checkbox"
                             />
-                            <label for="checkbox">
+                            <label for="checkbox" id="switch-theme-icon">
                                 <span v-if="userTheme === 'light-theme'"
                                     >🌙</span
                                 >
@@ -80,7 +80,7 @@
                                 type="checkbox"
                                 class="switch-checkbox"
                             />
-                            <label for="checkbox">
+                            <label for="checkbox" id="switch-theme-icon">
                                 <span v-if="userTheme === 'light-theme'"
                                     >🌙</span
                                 >
