@@ -16,7 +16,7 @@ class TokenData(BaseModel):
 
 
 # user schema
-UserModelIn = create_pydantic_model(
+UserModelIn: t.Any = create_pydantic_model(
     table=BaseUser,
     exclude_columns=(
         BaseUser.active,
@@ -25,7 +25,7 @@ UserModelIn = create_pydantic_model(
     ),
     model_name="UserModelIn",
 )
-UserModelOut = create_pydantic_model(
+UserModelOut: t.Any = create_pydantic_model(
     table=BaseUser,
     include_default_columns=True,
     model_name="UserModelOut",

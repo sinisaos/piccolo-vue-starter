@@ -4,8 +4,8 @@ from fastapi.testclient import TestClient
 from piccolo.apps.user.tables import BaseUser
 from piccolo.testing.model_builder import ModelBuilder
 
-from app import app
-from home.tables import Task
+from apps.tasks.tables import Task
+from main import app
 
 
 class TestCrud(TestCase):

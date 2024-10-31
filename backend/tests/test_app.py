@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from fastapi.testclient import TestClient
 
-from app import app
+from main import app
 
 
 class TestApp(TestCase):

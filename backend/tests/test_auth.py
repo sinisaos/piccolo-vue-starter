@@ -5,8 +5,8 @@ from fastapi.testclient import TestClient
 from piccolo.apps.user.tables import BaseUser
 from piccolo.testing.model_builder import ModelBuilder
 
-from app import app
-from home.tables import Task
+from apps.tasks.tables import Task
+from main import app
 
 
 class TestAuth(TestCase):
@@ -53,20 +53,19 @@ class TestAuth(TestCase):
         )
 
         # user profile
-        task = (
-            Task(
-                name="Task 10",
-                completed=True,
-                created_at=datetime.now(),
-                task_user=1,
-            )
-            .save()
-            .run_sync()
-        )
+
+        Task(
+            name="Task 10",
+            completed=True,
+            created_at=datetime.now(),
+            task_user=1,
+        ).save().run_sync()
 
         response = client.get(
             "/accounts/profile/tasks/",
-            cookies={"Authorization": f"Bearer {response.json()['access_token']}"},
+            cookies={
+                "Authorization": f"Bearer {response.json()['access_token']}"
+            },
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 1)
@@ -93,6 +92,8 @@ class TestAuth(TestCase):
 
         response_delete = client.get(
             "/accounts/delete/",
-            cookies={"Authorization": f"Bearer {response.json()['access_token']}"},
+            cookies={
+                "Authorization": f"Bearer {response.json()['access_token']}"
+            },
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_delete.status_code, 200)

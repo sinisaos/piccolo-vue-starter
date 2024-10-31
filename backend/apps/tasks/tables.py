@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from piccolo.apps.user.tables import BaseUser
 from piccolo.columns import Boolean, ForeignKey, Timestamp, Varchar
 from piccolo.table import Table
