@@ -103,7 +103,7 @@ async def login_user(
 
 @router.post("/register/", response_model=UserModelOut, tags=["Auth"])
 async def register_user(user: UserModelIn):
-    user = BaseUser(**user.__dict__)
+    payload = user.model_dump()
     if (
         await BaseUser.exists().where(BaseUser.email == user.email).run()
         or await BaseUser.exists()
@@ -114,7 +114,8 @@ async def register_user(user: UserModelIn):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="User with that email or username already exists.",
         )
-    await user.save().run()
+    result = BaseUser(**payload)
+    await result.save().run()
     return UserModelOut(**user.__dict__)
 
 
@@ -149,7 +150,7 @@ async def user_delete(
     return Response(status_code=204)
 
 
-@router.get("/logout", tags=["Auth"])
+@router.get("/logout/", tags=["Auth"])
 def logout(request: Request):
     response = Response(status_code=204)
     response.delete_cookie("Authorization")
