@@ -1,0 +1,6 @@
+black
+coverage
+mypy
+pytest
+pytest-cov
+ruff

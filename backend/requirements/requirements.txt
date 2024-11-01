@@ -3,4 +3,4 @@ uvicorn
 jinja2
 piccolo[postgres]
 piccolo_admin
-python-jose
+pydantic-settings

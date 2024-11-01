@@ -28,12 +28,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="created" class="form-label">Created</label>
-                    <datetime
+                    <VueDatePicker
                         input-class="form-control"
                         type="datetime"
                         v-model="created"
-                        format="yyyy-dd-MM HH:mm"
-                    ></datetime>
+                        format="yyyy-MM-dd HH:mm"
+                    ></VueDatePicker>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -44,8 +44,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex"
-import { Datetime } from "vue-datetime"
-import "vue-datetime/dist/vue-datetime.css"
+import VueDatePicker from "@vuepic/vue-datepicker"
+import "@vuepic/vue-datepicker/dist/main.css"
 
 export default {
     data() {
@@ -58,7 +58,7 @@ export default {
         }
     },
     components: {
-        datetime: Datetime
+        VueDatePicker
     },
     computed: {
         ...mapGetters({ user: "stateUser", tasks: "stateTasks" })
@@ -69,7 +69,7 @@ export default {
             let data = {
                 name: this.name,
                 completed: this.completed,
-                created_at: this.created.slice(0, -5),
+                created_at: this.created.toISOString().slice(0, -5),
                 task_user: this.user.id
             }
             await this.createTask(data)

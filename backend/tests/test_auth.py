@@ -1,98 +1,99 @@
-from datetime import datetime
-from unittest import TestCase
-
 from fastapi.testclient import TestClient
 from piccolo.apps.user.tables import BaseUser
-from piccolo.testing.model_builder import ModelBuilder
 
-from app import app
-from home.tables import Task
+from main import app
 
 
-class TestAuth(TestCase):
+def test_user_register(test_db, create_test_data):
+    client = TestClient(app)
+    payload = {
+        "username": "user",
+        "email": "user@user.com",
+        "password": "user123",
+        "active": True,
+    }
 
-    token = "fd2ace4d75d53147774fbc8c0cfbd4a2"
+    response = client.post(
+        "/accounts/register/",
+        json=payload,
+    )
+    assert response.status_code == 200
+    assert response.json()["username"] == "user"
 
-    def setUp(self):
-        BaseUser.create_table(if_not_exists=True).run_sync()
-        Task.create_table(if_not_exists=True).run_sync()
-        ModelBuilder.build_sync(BaseUser)
-        ModelBuilder.build_sync(Task)
 
-    def tearDown(self):
-        Task.alter().drop_table().run_sync()
-        BaseUser.alter().drop_table().run_sync()
+def test_register_failed(test_db, create_test_data):
+    client = TestClient(app)
+    payload = {
+        "username": "testuser",
+        "email": "testuser@user.com",
+        "password": "testuser123",
+        "active": True,
+    }
 
-    def test_auth(self):
-        client = TestClient(app)
+    response = client.post(
+        "/accounts/register/",
+        json=payload,
+    )
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": "User with that email or username already exists.",
+    }
 
-        # user registration
-        payload = {
-            "username": "user",
-            "email": "user@user.com",
-            "password": 1234,
-        }
 
-        response = client.post(
-            "/accounts/register/",
-            json=payload,
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["username"], "user")
+def test_login(test_db, create_test_data):
+    client = TestClient(app)
+    payload = {
+        "username": "testuser",
+        "password": "testuser123",
+    }
 
-        # user login
-        payload = {
-            "username": "user",
-            "password": 1234,
-        }
+    response = client.post(
+        "/accounts/login/",
+        data=payload,
+        headers={"content-type": "application/x-www-form-urlencoded"},
+    )
 
-        response = client.post(
-            "/accounts/login/",
-            data=payload,
-            headers={"content-type": "application/x-www-form-urlencoded"},
-        )
+    assert response.status_code == 200
+    assert response.json()["token_type"] == "bearer"
 
-        # user profile
-        task = (
-            Task(
-                name="Task 10",
-                completed=True,
-                created_at=datetime.now(),
-                task_user=1,
-            )
-            .save()
-            .run_sync()
-        )
 
-        response = client.get(
-            "/accounts/profile/tasks/",
-            cookies={"Authorization": f"Bearer {response.json()['access_token']}"},
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()), 1)
-        self.assertEqual(response.json()[0]["task_user"], 1)
+def test_login_failed(test_db, create_test_data):
+    client = TestClient(app)
+    payload = {
+        "username": "wronguser",
+        "password": "wronguser123",
+    }
 
-        # user logout
-        response = client.get(
-            "/accounts/logout/",
-            cookies={"Authorization": f"Bearer {self.token}"},
-        )
-        self.assertEqual(response.status_code, 204)
+    response = client.post(
+        "/accounts/login/",
+        data=payload,
+        headers={"content-type": "application/x-www-form-urlencoded"},
+    )
 
-        # user delete
-        payload = {
-            "username": "user",
-            "password": 1234,
-        }
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Incorrect username or password"}
 
-        response = client.post(
-            "/accounts/login/",
-            data=payload,
-            headers={"content-type": "application/x-www-form-urlencoded"},
-        )
 
-        response_delete = client.get(
-            "/accounts/delete/",
-            cookies={"Authorization": f"Bearer {response.json()['access_token']}"},
-        )
-        self.assertEqual(response.status_code, 200)
+def test_logout(test_db, create_test_data, create_access_token):
+    client = TestClient(
+        app, cookies={"Authorization": f"Bearer {create_access_token}"}
+    )
+
+    response = client.get("/accounts/logout/")
+
+    assert response.status_code == 204
+    assert len(response.cookies) == 0
+
+
+def test_delete_user(test_db, create_test_data, create_access_token):
+    client = TestClient(
+        app, cookies={"Authorization": f"Bearer {create_access_token}"}
+    )
+
+    response = client.delete("/accounts/delete/")
+
+    users = BaseUser.select().run_sync()
+
+    assert response.status_code == 204
+    assert len(users) == 0
+    assert len(response.cookies) == 0
