@@ -21,6 +21,39 @@
                 </div>
             </div>
         </div>
+        <nav aria-label="page navigation" v-if="tasks.length > 0">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-bind:class="{ disabled: page === 1 }">
+                    <a
+                        v-on:click.prevent="getTasks(page - 1)"
+                        tabindex="-1"
+                        class="page-link"
+                        href=""
+                        >Previous</a
+                    >
+                </li>
+                <li class="page-item" :key="n" v-for="n in totalPages">
+                    <a
+                        v-bind:class="{ active: n === page }"
+                        v-on:click.prevent="getTasks(n)"
+                        class="page-link"
+                        href=""
+                        >{{ n }}</a
+                    >
+                </li>
+                <li
+                    class="page-item"
+                    v-bind:class="{ disabled: page === totalPages }"
+                >
+                    <a
+                        v-on:click.prevent="getTasks(page + 1)"
+                        class="page-link"
+                        href=""
+                        >Next</a
+                    >
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
 <script>
@@ -31,7 +64,10 @@ import { defineComponent } from "vue"
 export default defineComponent({
     data() {
         return {
-            tasks: []
+            tasks: [],
+            page: 1,
+            pageSize: 9,
+            totalPages: 0
         }
     },
     computed: {
@@ -44,14 +80,21 @@ export default defineComponent({
             const date = dayjs(dateString)
             return date.format("MMMM D, YYYY")
         },
-        async getTasks() {
-            let response = await axios.get("/tasks/?__readable=true")
+        async getTasks(pageNumber) {
+            const totalResponse = await axios.get("/tasks/count/")
+            this.totalPages = Math.ceil(
+                totalResponse.data.count / this.pageSize
+            )
+            const response = await axios.get(
+                `/tasks/?__page=${pageNumber}&__page_size=${this.pageSize}&__readable=true`
+            )
             this.tasks = response.data.rows
+            this.page = pageNumber
             return this.tasks
         }
     },
     mounted() {
-        this.getTasks()
+        this.getTasks(this.page)
     }
 })
 </script>
