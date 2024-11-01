@@ -3,45 +3,25 @@
         <h2>Profile</h2>
         <ul class="list-group">
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Username</strong>
                 <span>{{ user.username }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Email</strong>
                 <span>{{ user.email }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Last login</strong>
                 <span>{{ user.last_login }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong
                     ><router-link to="/dashboard">Tasks</router-link></strong
@@ -51,12 +31,7 @@
                 }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <button v-on:click="deleteAccount()" class="btn btn-danger">
                     Delete Account
@@ -67,9 +42,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
 
-export default {
+export default defineComponent({
     computed: {
         ...mapGetters({ user: "stateUser", tasks: "stateTasks" })
     },
@@ -90,5 +66,5 @@ export default {
         this.$store.dispatch("userTasks")
         this.$store.dispatch("userProfile")
     }
-}
+})
 </script>

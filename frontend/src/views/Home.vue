@@ -8,12 +8,10 @@
                             Posted by
                             <span
                                 ><b>{{ task.task_user_readable }}</b>
-                                <vue-moments-ago
-                                    prefix=""
-                                    suffix="ago"
-                                    :date="task.created_at"
-                                ></vue-moments-ago
-                            ></span>
+                                <i>
+                                    on {{ formatDate(task.created_at) }}</i
+                                ></span
+                            >
                         </p>
                         <h2>
                             {{ task.name }}
@@ -27,16 +25,14 @@
 </template>
 <script>
 import axios from "axios"
-import VueMomentsAgo from "vue-moments-ago"
+import dayjs from "dayjs"
+import { defineComponent } from "vue"
 
-export default {
+export default defineComponent({
     data() {
         return {
             tasks: []
         }
-    },
-    components: {
-        VueMomentsAgo
     },
     computed: {
         isLoggedIn() {
@@ -44,6 +40,10 @@ export default {
         }
     },
     methods: {
+        formatDate(dateString) {
+            const date = dayjs(dateString)
+            return date.format("MMMM D, YYYY")
+        },
         async getTasks() {
             let response = await axios.get("/tasks/?__readable=true")
             this.tasks = response.data.rows
@@ -53,11 +53,5 @@ export default {
     mounted() {
         this.getTasks()
     }
-}
+})
 </script>
-
-<style lang="less" scoped>
-.vue-moments-ago {
-    font-size: 1rem;
-}
-</style>

@@ -27,10 +27,13 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
 
-export default {
-    props: ["id"],
+export default defineComponent({
+    props: {
+        id: String
+    },
     data() {
         return {
             form: {
@@ -70,5 +73,5 @@ export default {
     mounted() {
         this.getTask()
     }
-}
+})
 </script>
