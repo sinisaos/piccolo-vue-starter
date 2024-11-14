@@ -27,7 +27,7 @@
                     ><router-link to="/dashboard">Tasks</router-link></strong
                 >
                 <span class="badge bg-primary rounded-pill">{{
-                    tasks.length
+                    tasks?.length
                 }}</span>
             </li>
             <li

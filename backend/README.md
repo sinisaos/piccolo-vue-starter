@@ -29,6 +29,7 @@ Create ``.env`` file in root of the project.
 
 ```bash
 DB_NAME=your_db_name
+TEST_DB_NAME=your_test_db_name
 DB_USER=your_db_username
 DB_PASSWORD=your_db_password
 DB_HOST=your_db_host
