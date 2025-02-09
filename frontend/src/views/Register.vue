@@ -4,7 +4,7 @@
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="card">
                     <div class="card-title text-center">
-                        <h3 class="p-3">Register</h3>
+                        <h3 class="p-3">Sign Up</h3>
                         <div
                             v-if="error"
                             class="alert alert-danger"
@@ -109,13 +109,22 @@
                                     >
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                            <p class="float-end">
-                                Already have account
-                                <router-link to="/login">Sign In</router-link>
-                            </p>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                            <br />
+                            <div
+                                class="container d-flex align-items-center justify-content-center"
+                            >
+                                <p>
+                                    Already have account?
+                                    <router-link to="/login"
+                                        >Sign In</router-link
+                                    >
+                                </p>
+                            </div>
                         </form>
                     </div>
                 </div>

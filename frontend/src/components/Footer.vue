@@ -1,8 +1,14 @@
 <template>
     <div class="d-flex flex-column">
-        <footer class="mt-auto py-3" id="footer">
-            <div class="container">
-                <span>&copy; {{ new Date().getFullYear() }} Piccolo | Vue</span>
+        <hr class="mb-4" />
+        <footer class="mt-auto">
+            <div class="row">
+                <div class="col-md-12 text-center" style="padding-bottom: 1em">
+                    <span
+                        >&copy; {{ new Date().getFullYear() }} Piccolo |
+                        Vue</span
+                    >
+                </div>
             </div>
         </footer>
     </div>

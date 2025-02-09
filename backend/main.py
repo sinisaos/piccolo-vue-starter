@@ -8,6 +8,7 @@ from starlette.routing import Mount
 from apps.accounts.endpoints import router
 from apps.admin.config import ADMIN
 from apps.tasks.endpoints import tasks_router
+from utils.reset_password.endpoints import forgot_password, reset_password
 
 
 async def open_database_connection_pool():
@@ -33,7 +34,13 @@ async def lifespan(app: FastAPI):
     await close_database_connection_pool()
 
 
-app = FastAPI(routes=[Mount("/admin/", ADMIN)])
+app = FastAPI(
+    routes=[
+        Mount("/admin/", ADMIN),
+        Mount("/forgot-password/", forgot_password()),
+        Mount("/reset-password/", reset_password()),
+    ]
+)
 
 
 app.add_middleware(

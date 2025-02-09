@@ -18,7 +18,7 @@
                 class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Last login</strong>
-                <span>{{ user.last_login }}</span>
+                <span>{{ formatDate(user.last_login) }}</span>
             </li>
             <li
                 class="list-group-item d-flex justify-content-between align-items-center"
@@ -44,6 +44,7 @@
 <script>
 import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
+import dayjs from "dayjs"
 
 export default defineComponent({
     computed: {
@@ -51,6 +52,10 @@ export default defineComponent({
     },
     methods: {
         ...mapActions(["deleteUser"]),
+        formatDate(dateString) {
+            const date = dayjs(dateString)
+            return date.format("MMMM D, YYYY")
+        },
         async deleteAccount() {
             if (confirm("Are you sure you want to delete the account!"))
                 try {

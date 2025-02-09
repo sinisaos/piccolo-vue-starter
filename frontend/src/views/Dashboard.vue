@@ -28,13 +28,15 @@
                                 }"
                                 class="btn btn-warning"
                             >
-                                Edit </router-link
+                                <i
+                                    class="fa-regular fa-pen-to-square"
+                                ></i></router-link
                             >&nbsp;
                             <button
                                 class="btn btn-danger"
                                 @click="removeTask(task.id)"
                             >
-                                Delete
+                                <i class="fa-regular fa-trash-can"></i>
                             </button>
                             <br />
                         </td>
@@ -48,7 +50,6 @@
 <script>
 import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
-
 import CreateTask from "../components/CreateTask.vue"
 
 export default defineComponent({

@@ -9,7 +9,7 @@
             Create task
         </button>
         <div v-if="isShow">
-            <form ref="anyName" @submit.prevent="submit">
+            <form @submit.prevent="submit">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input
@@ -81,7 +81,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 #create-button {
     margin-bottom: 1em;
 }

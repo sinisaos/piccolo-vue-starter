@@ -4,10 +4,10 @@
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="card">
                     <div class="card-title text-center">
-                        <h2 class="p-3">Login</h2>
+                        <h2 class="p-3">Sign In</h2>
                         <div
                             v-if="error"
-                            class="alert alert-danger"
+                            class="alert alert-warning"
                             role="alert"
                         >
                             Incorrect username or password
@@ -37,15 +37,31 @@
                                     class="form-control"
                                 />
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                            <p class="float-end">
-                                Don't have account
-                                <router-link to="/register"
-                                    >Sign Up</router-link
-                                >
-                            </p>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                            <br />
+                            <div
+                                class="container d-flex align-items-center justify-content-center"
+                            >
+                                <p>
+                                    Don't have account?
+                                    <router-link to="/register"
+                                        >Sign Up</router-link
+                                    >
+                                </p>
+                            </div>
+                            <div
+                                class="container d-flex align-items-center justify-content-center"
+                            >
+                                <p class="float-start">
+                                    <router-link to="/forgot-password"
+                                        >Forgot Password?</router-link
+                                    >
+                                </p>
+                            </div>
                         </form>
                     </div>
                 </div>

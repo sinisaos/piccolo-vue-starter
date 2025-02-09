@@ -1,10 +1,21 @@
 <template>
     <header>
-        <nav class="navbar navbar-expand-md navbar-light">
+        <nav class="navbar navbar-expand-sm">
             <div class="container">
                 <router-link class="navbar-brand" to="/"
                     >Piccolo | Vue</router-link
                 >
+                <ul class="navbar-nav ms-auto">
+                    <button class="btn btn" id="themeSwitch">
+                        <i
+                            :class="
+                                theme == 'dark'
+                                    ? 'fa-regular fa-moon fa-xl'
+                                    : 'fa-regular fa-sun fa-xl'
+                            "
+                        ></i>
+                    </button>
+                </ul>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -21,27 +32,6 @@
                         v-if="isAuthenticated"
                         class="navbar-nav ms-auto mb-2 mb-md-0"
                     >
-                        <li class="nav-link">
-                            <input
-                                @change="toggleTheme"
-                                id="checkbox"
-                                type="checkbox"
-                                class="switch-checkbox"
-                            />
-                            <label for="checkbox" id="switch-theme-icon">
-                                <span v-if="userTheme === 'light-theme'"
-                                    >🌙</span
-                                >
-                                <span v-else>☀️</span>
-                                <div
-                                    class="switch-toggle"
-                                    :class="{
-                                        'switch-toggle-checked':
-                                            userTheme === 'dark-theme'
-                                    }"
-                                ></div>
-                            </label>
-                        </li>
                         <li class="nav-item dropdown">
                             <a
                                 class="nav-link dropdown-toggle"
@@ -51,7 +41,8 @@
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                Hello {{ stateUser.username }}
+                                <i class="fa-regular fa-circle-user"></i>
+                                {{ stateUser.username }}
                             </a>
                             <ul
                                 class="dropdown-menu"
@@ -61,47 +52,34 @@
                                     <router-link
                                         class="dropdown-item"
                                         to="/profile"
-                                        >Profile</router-link
+                                        ><i class="fa-regular fa-user"></i>
+                                        Profile</router-link
                                     >
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" v-on:click="logout"
-                                        >Logout</a
+                                    <a
+                                        class="dropdown-item"
+                                        v-on:click="logout"
+                                        style="cursor: pointer"
+                                        ><i
+                                            class="fa fa-power-off"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Logout</a
                                     >
                                 </li>
                             </ul>
                         </li>
                     </ul>
                     <ul v-else class="navbar-nav ms-auto mb-2 mb-md-0">
-                        <li class="nav-link">
-                            <input
-                                @change="toggleTheme"
-                                id="checkbox"
-                                type="checkbox"
-                                class="switch-checkbox"
-                            />
-                            <label for="checkbox" id="switch-theme-icon">
-                                <span v-if="userTheme === 'light-theme'"
-                                    >🌙</span
-                                >
-                                <span v-else>☀️</span>
-                                <div
-                                    class="switch-toggle"
-                                    :class="{
-                                        'switch-toggle-checked':
-                                            userTheme === 'dark-theme'
-                                    }"
-                                ></div>
-                            </label>
-                        </li>
                         <li class="nav-item">
                             <router-link class="nav-link" to="/login"
-                                >Log In</router-link
+                                >Sign In</router-link
                             >
                         </li>
                         <li class="nav-item">
                             <router-link class="nav-link" to="/register"
-                                >Register</router-link
+                                >Sign Up</router-link
                             >
                         </li>
                     </ul>
@@ -118,7 +96,7 @@ import { mapGetters } from "vuex"
 export default defineComponent({
     data() {
         return {
-            userTheme: "light-theme"
+            theme: ""
         }
     },
     computed: {
@@ -128,29 +106,25 @@ export default defineComponent({
         async logout() {
             await this.$store.dispatch("logoutUser")
             this.$router.push("/")
-        },
-        setTheme(theme) {
-            localStorage.setItem("user-theme", theme)
-            this.userTheme = theme
-            document.documentElement.className = theme
-        },
-        toggleTheme() {
-            const activeTheme = localStorage.getItem("user-theme")
-            if (activeTheme === "light-theme") {
-                this.setTheme("dark-theme")
-            } else {
-                this.setTheme("light-theme")
-            }
         }
     },
     watch: {
         $route() {
             document.querySelector("#navbarScroll").classList.remove("show")
         }
+    },
+    mounted() {
+        document.getElementById("themeSwitch").addEventListener("click", () => {
+            if (
+                document.documentElement.getAttribute("data-bs-theme") == "dark"
+            ) {
+                document.documentElement.setAttribute("data-bs-theme", "light")
+                this.theme = "dark"
+            } else {
+                document.documentElement.setAttribute("data-bs-theme", "dark")
+                this.theme = "true"
+            }
+        })
     }
 })
 </script>
-
-<style lang="less">
-@import "../main.less";
-</style>

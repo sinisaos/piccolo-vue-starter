@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 import store from '../store'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
@@ -6,6 +6,8 @@ import Register from '../views/Register.vue'
 import EditTask from '../views/EditTask.vue'
 import Profile from '../views/Profile.vue'
 import Dashboard from '../views/Dashboard.vue'
+import ForgotPassword from '../views/ForgotPassword.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 
 const routes = [
   {
@@ -22,6 +24,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
+  },
+  {
+    path: '/reset-password/',
+    name: 'ResetPassword',
+    component: ResetPassword,
   },
   {
     path: '/profile',
@@ -45,7 +57,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 })
 
