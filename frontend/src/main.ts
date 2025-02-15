@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import axios from 'axios'
-import Cookies from "js-cookie"
+import { getCookie } from 'typescript-cookie'
 
 import App from './App.vue'
 import router from './router'
@@ -16,13 +16,13 @@ axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000/'
 
 // CSRF token
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use(function (config: any) {
   if (
     ["POST", "PUT", "DELETE", "PATCH"].indexOf(
       config.method.toUpperCase()
     ) != -1
   ) {
-    const csrfToken = Cookies.get("csrftoken")
+    const csrfToken = getCookie("csrftoken")
     config.headers["X-CSRFToken"] = csrfToken
   }
   return config

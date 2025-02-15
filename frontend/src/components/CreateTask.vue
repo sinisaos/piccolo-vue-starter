@@ -42,7 +42,7 @@
     </section>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue"
 import { useUserStore } from "../stores/users"
 import { useTaskStore } from "../stores/tasks"

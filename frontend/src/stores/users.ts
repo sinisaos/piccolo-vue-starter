@@ -11,15 +11,16 @@ export const useUserStore = defineStore('user', {
     isAuthenticated: (state) => state.user,
   },
   actions: {
-    async registerUser(form) {
+    async registerUser(form: { username: string; email: string; password: string; data: null }) {
       const response = await axios.post('accounts/register/', form)
       let userForm = new FormData()
       userForm.append('username', form.username)
       userForm.append('email', form.email)
       userForm.append('password', form.password)
+      console.log(response.data.error)
       this.user = form.data
     },
-    async loginUser(user) {
+    async loginUser(user: any) {
       const response = await axios.post('accounts/login/', user)
       console.log(response.data.error)
       this.user = response.data

@@ -72,7 +72,8 @@
         <Footer />
     </div>
 </template>
-<script>
+
+<script lang="ts">
 import { defineComponent } from "vue"
 import { useTaskStore } from "../stores/tasks"
 import dayjs from "dayjs"
