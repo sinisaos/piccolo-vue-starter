@@ -29,7 +29,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul
-                        v-if="isAuthenticated"
+                        v-if="userStore.isAuthenticated"
                         class="navbar-nav ms-auto mb-2 mb-md-0"
                     >
                         <li class="nav-item dropdown">
@@ -42,7 +42,7 @@
                                 aria-expanded="false"
                             >
                                 <i class="fa-regular fa-circle-user"></i>
-                                {{ stateUser.username }}
+                                {{ userStore.user?.username }}
                             </a>
                             <ul
                                 class="dropdown-menu"
@@ -91,21 +91,28 @@
 
 <script>
 import { defineComponent } from "vue"
-import { mapGetters } from "vuex"
+import { useUserStore } from "../stores/users"
 
 export default defineComponent({
+    setup() {
+        const userStore = useUserStore()
+        return { userStore }
+    },
     data() {
         return {
             theme: ""
         }
     },
-    computed: {
-        ...mapGetters(["isAuthenticated", "stateUser"])
-    },
     methods: {
         async logout() {
-            await this.$store.dispatch("logoutUser")
-            this.$router.push("/")
+            await this.userStore
+                .logoutUser()
+                .then(() => {
+                    this.$router.push("/")
+                })
+                .catch(() => {
+                    this.error = true
+                })
         }
     },
     watch: {

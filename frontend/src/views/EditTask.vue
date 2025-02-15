@@ -3,7 +3,7 @@
         <div class="row">
             <h2>Edit task</h2>
             <hr />
-            <div v-if="task">
+            <div v-if="taskStore.task">
                 <form @submit.prevent="submit">
                     <label for="name" class="form-label">Name</label>
                     <input
@@ -33,9 +33,13 @@
 
 <script>
 import { defineComponent } from "vue"
-import { mapGetters, mapActions } from "vuex"
+import { useTaskStore } from "../stores/tasks"
 
 export default defineComponent({
+    setup() {
+        const taskStore = useTaskStore()
+        return { taskStore }
+    },
     props: {
         id: String
     },
@@ -47,36 +51,31 @@ export default defineComponent({
             }
         }
     },
-    computed: {
-        ...mapGetters({ user: "stateUser", task: "stateTask" })
-    },
     methods: {
-        ...mapActions(["updateTask", "singleTask"]),
         async submit() {
             let data = {
                 id: this.id,
                 form: this.form
             }
             try {
-                await this.updateTask(data)
-                this.$store.dispatch("userTasks")
+                await this.taskStore.updateTask(data)
                 this.$router.push("/dashboard")
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         },
         async getTask() {
             try {
-                await this.singleTask(this.id)
-                this.form.name = this.task.name
-                this.form.completed = this.task.completed
+                await this.taskStore.singleTask(this.id)
+                this.form.name = this.taskStore.task.name
+                this.form.completed = this.taskStore.task.completed
             } catch (error) {
-                console.error(error)
+                console.log(error)
             }
         }
     },
-    mounted() {
-        this.getTask()
+    async mounted() {
+        await this.getTask()
     }
 })
 </script>

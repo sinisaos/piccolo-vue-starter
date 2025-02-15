@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import store from '../store'
+import { useUserStore } from "../stores/users"
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
@@ -63,7 +63,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isAuthenticated) {
+    const userStore = useUserStore()
+    if (userStore.isAuthenticated) {
       next()
       return
     }
