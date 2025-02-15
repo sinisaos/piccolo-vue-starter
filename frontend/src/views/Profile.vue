@@ -6,19 +6,19 @@
                 class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Username</strong>
-                <span>{{ user.username }}</span>
+                <span>{{ userStore.user?.username }}</span>
             </li>
             <li
                 class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Email</strong>
-                <span>{{ user.email }}</span>
+                <span>{{ userStore.user?.email }}</span>
             </li>
             <li
                 class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Last login</strong>
-                <span>{{ formatDate(user.last_login) }}</span>
+                <span>{{ formatDate(userStore.user?.last_login) }}</span>
             </li>
             <li
                 class="list-group-item d-flex justify-content-between align-items-center"
@@ -27,7 +27,7 @@
                     ><router-link to="/dashboard">Tasks</router-link></strong
                 >
                 <span class="badge bg-primary rounded-pill">{{
-                    tasks?.length
+                    userStore.tasks?.length
                 }}</span>
             </li>
             <li
@@ -41,17 +41,17 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue"
-import { mapGetters, mapActions } from "vuex"
+import { useUserStore } from "../stores/users"
 import dayjs from "dayjs"
 
 export default defineComponent({
-    computed: {
-        ...mapGetters({ user: "stateUser", tasks: "stateTasks" })
+    setup() {
+        const userStore = useUserStore()
+        return { userStore }
     },
     methods: {
-        ...mapActions(["deleteUser"]),
         formatDate(dateString) {
             const date = dayjs(dateString)
             return date.format("MMMM D, YYYY")
@@ -59,17 +59,17 @@ export default defineComponent({
         async deleteAccount() {
             if (confirm("Are you sure you want to delete the account!"))
                 try {
-                    await this.deleteUser(this.user.id)
-                    await this.$store.dispatch("logoutUser")
+                    await this.userStore.deleteUser(this.userStore.user.id)
+                    await this.userStore.logoutUser()
                     this.$router.push("/")
                 } catch (error) {
                     console.error(error)
                 }
         }
     },
-    mounted() {
-        this.$store.dispatch("userTasks")
-        this.$store.dispatch("userProfile")
+    async mounted() {
+        await this.userStore.userTasks()
+        await this.userStore.userProfile()
     }
 })
 </script>

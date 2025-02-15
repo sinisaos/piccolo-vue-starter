@@ -133,15 +133,16 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue"
-import { mapActions } from "vuex"
+import { useUserStore } from "../stores/users"
 import { useVuelidate } from "@vuelidate/core"
 import { required, email, minLength, sameAs } from "@vuelidate/validators"
 
 export default defineComponent({
     setup() {
-        return { v$: useVuelidate() }
+        const userStore = useUserStore()
+        return { userStore, v$: useVuelidate() }
     },
     data() {
         return {
@@ -164,7 +165,6 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapActions(["registerUser"]),
         async submit() {
             const data = {
                 username: this.username,
@@ -176,8 +176,8 @@ export default defineComponent({
                 if (this.v$.$invalid) {
                     return
                 }
-                await this.registerUser(data)
-                this.$router.push("/")
+                await this.userStore.registerUser(data)
+                this.$router.push("/login")
             } catch (error) {
                 this.error = true
             }

@@ -42,12 +42,19 @@
     </section>
 </template>
 
-<script>
-import { mapGetters, mapActions } from "vuex"
+<script lang="ts">
+import { defineComponent } from "vue"
+import { useUserStore } from "../stores/users"
+import { useTaskStore } from "../stores/tasks"
 import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 
-export default {
+export default defineComponent({
+    setup() {
+        const userStore = useUserStore()
+        const taskStore = useTaskStore()
+        return { userStore, taskStore }
+    },
     data() {
         return {
             name: "",
@@ -60,25 +67,21 @@ export default {
     components: {
         VueDatePicker
     },
-    computed: {
-        ...mapGetters({ user: "stateUser", tasks: "stateTasks" })
-    },
     methods: {
-        ...mapActions(["createTask"]),
         async submit() {
             let data = {
                 name: this.name,
                 completed: this.completed,
                 created_at: this.created.toISOString().slice(0, -5),
-                task_user: this.user.id
+                task_user: this.userStore.user.id
             }
-            await this.createTask(data)
-            this.$store.dispatch("userTasks")
+            await this.taskStore.createTask(data)
+            await this.userStore.userTasks()
             this.isShow = false
             this.name = this.completed = this.created = ""
         }
     }
-}
+})
 </script>
 
 <style scoped>

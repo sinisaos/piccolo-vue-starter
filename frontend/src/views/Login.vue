@@ -70,11 +70,15 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from "vue"
-import { mapActions } from "vuex"
+import { useUserStore } from "../stores/users"
 
 export default defineComponent({
+    setup() {
+        const userStore = useUserStore()
+        return { userStore }
+    },
     data() {
         return {
             username: "",
@@ -83,14 +87,14 @@ export default defineComponent({
         }
     },
     methods: {
-        ...mapActions(["loginUser", "registerUser"]),
         async submit() {
             const form = new FormData()
             form.append("username", this.username)
             form.append("password", this.password)
-            await this.$store
-                .dispatch("loginUser", form)
+            await this.userStore
+                .loginUser(form)
                 .then(() => {
+                    this.userStore.userProfile()
                     this.$router.push("/")
                 })
                 .catch(() => {
