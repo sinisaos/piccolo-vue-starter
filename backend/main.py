@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from piccolo.engine import engine_finder
 from starlette.routing import Mount
 
-from apps.accounts.endpoints import router
+from apps.accounts.endpoints import auth_router
 from apps.admin.config import ADMIN
 from apps.tasks.endpoints import tasks_router
 from utils.reset_password.endpoints import forgot_password, reset_password
@@ -57,7 +57,7 @@ def index():
     return {"message": "Welcome to Piccolo Vue starter"}
 
 
-app.include_router(router)
+app.include_router(auth_router)
 app.include_router(tasks_router)
 
 
