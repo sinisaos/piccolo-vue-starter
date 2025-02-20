@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from piccolo_api.crud.endpoints import PiccoloCRUD
 from piccolo_api.fastapi.endpoints import FastAPIKwargs, FastAPIWrapper
 
-from apps.accounts.endpoints import oauth2_scheme
+from apps.accounts.utils import oauth2_scheme
 from apps.tasks.tables import Task
 
 tasks_router = APIRouter()
