@@ -75,9 +75,7 @@ async def user_tasks(
     return await user_service.user_tasks_list(current_user=current_user)
 
 
-@auth_router.delete(
-    "/delete/", response_model=UserModelOut, tags=["User profile"]
-)
+@auth_router.delete("/delete/", tags=["User profile"])
 async def user_delete(
     current_user: UserModelOut = Depends(get_current_user),
 ) -> Response:

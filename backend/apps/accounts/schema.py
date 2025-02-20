@@ -1,4 +1,4 @@
-import typing as t
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -10,7 +10,7 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: t.Optional[str] = None
+    username: Optional[str] = None
 
 
 # user schema
